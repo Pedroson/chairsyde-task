@@ -15,13 +15,10 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(CarDataRepositoryInterface::class, function ($app) {
-            // Toggle data sources using an .env variable
-            if (config('services.user_data.source') === 'api') {
-                return new ApiCarRepository(
-                    config('services.carvector.base_url'),
-                    config('services.carvector.api_key')
-                );
-            }
+            return new ApiCarRepository(
+                config('services.carvector.base_url'),
+                config('services.carvector.api_key')
+            );
         });
     }
 
