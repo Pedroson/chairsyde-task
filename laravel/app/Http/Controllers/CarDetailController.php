@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Dtos\CarDetailsRequestDto;
 use App\Handlers\CarDetailHandler;
-use App\Http\Requests\CarDetailRequest;
 
 class CarDetailController extends Controller
 {
-    public function __invoke(CarDetailRequest $request, CarDetailHandler $handler)
+    public function __invoke(int $id, CarDetailHandler $handler)
     {
-        $dto = CarDetailsRequestDto::fromArray($request->validated());
+        $dto = CarDetailsRequestDto::fromArray(['id' => $id]);
 
         $response = $handler->handle($dto);
 
