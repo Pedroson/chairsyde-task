@@ -27,7 +27,18 @@ describe('cars api', () => {
     expect(result).toEqual(cars)
   })
 
-  it('searchCars omits undefined optional params', async () => {
+  it('searchCars excludes optional params that were not provided', async () => {
+    get.mockResolvedValue({ data: [] })
+
+    await searchCars({ make: 'Ford', limit: 20, offset: 20 })
+
+    const sentParams = get.mock.calls[0][1].params
+    expect(Object.keys(sentParams).sort()).toEqual(['limit', 'make', 'offset'])
+    expect('year' in sentParams).toBe(false)
+    expect('model' in sentParams).toBe(false)
+  })
+
+  it('searchCars passes through provided optional params', async () => {
     get.mockResolvedValue({ data: [] })
 
     await searchCars({ make: 'Ford', limit: 20, offset: 20, year: 2019, model: 'Focus' })
