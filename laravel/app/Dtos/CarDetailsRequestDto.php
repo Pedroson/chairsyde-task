@@ -4,7 +4,7 @@ namespace App\Dtos;
 
 use App\Contracts\DtoInterface;
 
-class CarDetailsRequestDto implements DtoInterface
+readonly class CarDetailsRequestDto implements DtoInterface
 {
     public function __construct(
         public int $id
