@@ -22,11 +22,14 @@ watch(
     if (id === null) return
     loading.value = true
     try {
-      car.value = await getCar(id)
+      const result = await getCar(id)
+      if (id !== props.carId) return
+      car.value = result
     } catch {
+      if (id !== props.carId) return
       error.value = 'Could not load car details.'
     } finally {
-      loading.value = false
+      if (id === props.carId) loading.value = false
     }
   },
   { immediate: true },

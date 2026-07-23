@@ -59,4 +59,23 @@ describe('CarDetailModal', () => {
     await wrapper.find('.modal-close').trigger('click')
     expect(wrapper.emitted('close')).toBeTruthy()
   })
+
+  it('emits close when the backdrop is clicked', async () => {
+    vi.mocked(getCar).mockResolvedValue(detail)
+    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    await flushPromises()
+    await wrapper.find('.modal-backdrop').trigger('click')
+    expect(wrapper.emitted('close')).toBeTruthy()
+  })
+
+  it('shows a loading state before the detail resolves', async () => {
+    let resolve!: (v: typeof detail) => void
+    vi.mocked(getCar).mockReturnValue(new Promise((r) => { resolve = r }))
+    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    await wrapper.vm.$nextTick()
+    expect(wrapper.text()).toContain('Loading')
+    resolve(detail)
+    await flushPromises()
+    expect(wrapper.text()).toContain('Civic')
+  })
 })
