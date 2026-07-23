@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'carvector' => [
+        'api_key' => env('CAR_VECTOR_API_KEY'),
+        'base_url' => 'https://api.carvector.io/v1'
+    ]
 
 ];
