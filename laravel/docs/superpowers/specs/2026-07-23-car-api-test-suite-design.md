@@ -58,20 +58,23 @@ the network:
 - `CarDetailTest`
   - Happy path: faked CarVector vehicle → `200` + full detail JSON.
   - Not found: faked CarVector `404`. Assert the **actual** resulting behavior
-    (the repository's `->throw()` raises `RequestException`, so this surfaces as
-    an unhandled `500`, not a `404`) rather than asserting a `404` that does not
-    occur. See Finding #2.
+    (findById returns `[]`, so `CarDetailDto::fromArray([])` fails on the missing
+    `id` key and this surfaces as a `500`, not a `404`) rather than asserting a
+    `404` that does not occur. See Finding #2.
 
 ## Findings (documented, not fixed here)
 
 1. **~~`services.user_data.source` never defined~~** — resolved by the user;
    `RepositoryServiceProvider` now binds `ApiCarRepository` unconditionally.
-2. **Detail not-found never returns 404.** `ApiCarRepository::findById()` calls
-   `->throw()`, so a CarVector `404` raises `RequestException` (unhandled `500`)
-   and `CarDetailHandler`'s `null → NotFoundHttpException` branch is unreachable
-   via the real repository. This contradicts the `404` documented in
-   `openapi.yaml`. Feature tests document the current behavior; the fix (map a
-   CarVector `404` to `null`, or catch the exception) is a separate decision.
+2. **Detail not-found never returns 404.** `->throw()` has since been removed,
+   but the not-found path is still not clean: `ApiCarRepository::findById()`
+   returns `->collect()->toArray()`, which yields `[]` (never `null`) for an
+   empty/404 body. So `CarDetailHandler`'s `null → NotFoundHttpException` branch
+   remains unreachable via the real repository, and a CarVector `404` instead
+   flows into `CarDetailDto::fromArray([])`, which fails on the missing `id`
+   key → `500`. This contradicts the `404` documented in `openapi.yaml`.
+   Feature tests document the current behavior; the fix (map a CarVector `404`
+   to `null` in the repository) is a separate decision.
 
 ## Out of Scope
 
