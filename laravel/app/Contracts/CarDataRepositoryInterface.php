@@ -1,6 +1,8 @@
 <?php
 namespace App\Contracts;
 
+use App\Dtos\CarDetailsRequestDto;
+use App\Dtos\CarSearchRequestDto;
 use Illuminate\Support\Collection;
 
 interface CarDataRepositoryInterface
@@ -8,6 +10,6 @@ interface CarDataRepositoryInterface
     /**
      * @return Collection<int, array>
      */
-    public function getAll(): Collection;
-    public function findById(int $id): ?array;
+    public function getAll(CarSearchRequestDto $dto): Collection;
+    public function findById(CarDetailsRequestDto $dto): ?array;
 }
