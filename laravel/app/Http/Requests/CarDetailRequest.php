@@ -9,12 +9,20 @@ class CarDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
         ];
     }
 
     public function authorize()
     {
         return true;
+    }
+
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+        $data['id'] = $this->route('id');
+
+        return $data;
     }
 }
