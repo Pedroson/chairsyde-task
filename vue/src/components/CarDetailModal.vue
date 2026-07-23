@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 import { getCar, type CarDetail } from '@/api/cars'
 
 const props = defineProps<{
-  carId: number | null
+  carId: string | null
 }>()
 
 const emit = defineEmits<{
@@ -51,7 +51,7 @@ watch(
           <dt>Trim</dt><dd>{{ car.trim }}</dd>
           <dt>Horsepower</dt><dd>{{ car.horsepower }}</dd>
           <dt>Cylinders</dt><dd>{{ car.cylinders }}</dd>
-          <dt>Displacement</dt><dd>{{ car.displacement }}</dd>
+          <dt>Displacement</dt><dd>{{ car.displacement_l }}</dd>
           <dt>Fuel type</dt><dd>{{ car.fuel_type }}</dd>
           <dt>Transmission</dt><dd>{{ car.transmission }}</dd>
           <dt>Body class</dt><dd>{{ car.body_class }}</dd>

@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import CarTable from '@/components/CarTable.vue'
 
 const cars = [
-  { id: 1, make: 'Toyota', model: 'Corolla', year: 2020 },
-  { id: 2, make: 'Honda', model: 'Civic', year: 2021 },
+  { id: 'asG52Fgs6gh', make: 'Toyota', model: 'Corolla', year: 2020 },
+  { id: 'asG52Fgs6gd', make: 'Honda', model: 'Civic', year: 2021 },
 ]
 
 describe('CarTable', () => {

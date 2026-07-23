@@ -1,21 +1,21 @@
 import axios from 'axios'
 
 export interface CarSummary {
-  id: number
+  id: string
   make: string
   model: string
   year: number
 }
 
 export interface CarDetail {
-  id: number
+  id: string
   make: string
   model: string
   year: number
   trim: string
   horsepower: string
   cylinders: string
-  displacement: string
+  displacement_l: string
   fuel_type: string
   transmission: string
   body_class: string
@@ -45,7 +45,7 @@ export async function searchCars(params: CarSearchParams): Promise<CarSummary[]>
   return response.data
 }
 
-export async function getCar(id: number): Promise<CarDetail> {
+export async function getCar(id: string): Promise<CarDetail> {
   const response = await client.get(`/cars/${id}`)
   return response.data
 }

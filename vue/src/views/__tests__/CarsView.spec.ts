@@ -10,8 +10,8 @@ import { searchCars } from '@/api/cars'
 import CarsView from '@/views/CarsView.vue'
 
 const page1 = [
-  { id: 1, make: 'Toyota', model: 'Corolla', year: 2020 },
-  { id: 2, make: 'Toyota', model: 'Camry', year: 2019 },
+  { id: 'asG52Fgs6gh', make: 'Toyota', model: 'Corolla', year: 2020 },
+  { id: 'asG52Fgs6gs', make: 'Toyota', model: 'Camry', year: 2019 },
 ]
 
 describe('CarsView', () => {
@@ -39,7 +39,7 @@ describe('CarsView', () => {
   it('advances offset by limit when Next is clicked', async () => {
     vi.mocked(searchCars).mockResolvedValue(
       Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
+        id: `asG52Fgs6gh${(i + 1)}`,
         make: 'Toyota',
         model: `M${i}`,
         year: 2020,
@@ -74,7 +74,12 @@ describe('CarsView', () => {
 
   it('Previous is disabled on the first page and decrements offset by limit', async () => {
     vi.mocked(searchCars).mockResolvedValue(
-      Array.from({ length: 20 }, (_, i) => ({ id: i + 1, make: 'Toyota', model: `M${i}`, year: 2020 })),
+      Array.from({ length: 20 }, (_, i) => ({
+        id: `asG52Fgs6g${(i + 1)}`,
+        make: 'Toyota',
+        model: `M${i}`,
+        year: 2020,
+      })),
     )
     const wrapper = mount(CarsView)
     await wrapper.find('input[name="make"]').setValue('Toyota')

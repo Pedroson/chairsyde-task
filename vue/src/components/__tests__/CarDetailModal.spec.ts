@@ -9,14 +9,14 @@ import { getCar } from '@/api/cars'
 import CarDetailModal from '@/components/CarDetailModal.vue'
 
 const detail = {
-  id: 7,
+  id: 'asG52Fgs6gs',
   make: 'Honda',
   model: 'Civic',
   year: 2021,
   trim: 'Sport',
   horsepower: '158',
   cylinders: '4',
-  displacement: '2.0',
+  displacement_l: '2.0',
   fuel_type: 'Gasoline',
   transmission: 'CVT',
   body_class: 'Sedan',
@@ -35,7 +35,7 @@ describe('CarDetailModal', () => {
 
   it('fetches and displays the car detail when opened', async () => {
     vi.mocked(getCar).mockResolvedValue(detail)
-    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6gh' } })
     await flushPromises()
 
     expect(getCar).toHaveBeenCalledWith(7)
@@ -46,7 +46,7 @@ describe('CarDetailModal', () => {
 
   it('shows an error message when the fetch fails', async () => {
     vi.mocked(getCar).mockRejectedValue(new Error('boom'))
-    const wrapper = mount(CarDetailModal, { props: { carId: 9 } })
+    const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6ghy' } })
     await flushPromises()
 
     expect(wrapper.text()).toContain('Could not load')
@@ -54,7 +54,7 @@ describe('CarDetailModal', () => {
 
   it('emits close when the close button is clicked', async () => {
     vi.mocked(getCar).mockResolvedValue(detail)
-    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6gh' } })
     await flushPromises()
     await wrapper.find('.modal-close').trigger('click')
     expect(wrapper.emitted('close')).toBeTruthy()
@@ -62,7 +62,7 @@ describe('CarDetailModal', () => {
 
   it('emits close when the backdrop is clicked', async () => {
     vi.mocked(getCar).mockResolvedValue(detail)
-    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6gh' } })
     await flushPromises()
     await wrapper.find('.modal-backdrop').trigger('click')
     expect(wrapper.emitted('close')).toBeTruthy()
@@ -70,8 +70,12 @@ describe('CarDetailModal', () => {
 
   it('shows a loading state before the detail resolves', async () => {
     let resolve!: (v: typeof detail) => void
-    vi.mocked(getCar).mockReturnValue(new Promise((r) => { resolve = r }))
-    const wrapper = mount(CarDetailModal, { props: { carId: 7 } })
+    vi.mocked(getCar).mockReturnValue(
+      new Promise((r) => {
+        resolve = r
+      }),
+    )
+    const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6gh' } })
     await wrapper.vm.$nextTick()
     expect(wrapper.text()).toContain('Loading')
     resolve(detail)

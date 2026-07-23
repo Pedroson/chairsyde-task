@@ -16,7 +16,7 @@ describe('cars api', () => {
   })
 
   it('searchCars requests /cars with params and returns the data array', async () => {
-    const cars = [{ id: 1, make: 'Toyota', model: 'Corolla', year: 2020 }]
+    const cars = [{ id: 'asG52Fgs6gh', make: 'Toyota', model: 'Corolla', year: 2020 }]
     get.mockResolvedValue({ data: cars })
 
     const result = await searchCars({ make: 'Toyota', limit: 20, offset: 0 })
