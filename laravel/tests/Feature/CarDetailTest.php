@@ -32,12 +32,14 @@ test('it returns the car detail from the CarVector API', function () {
         ->assertJsonPath('image_url', 'https://example.com/car.png');
 });
 
-// Finding #2: a CarVector 404 yields an empty array from findById(), so the
-// handler's null -> NotFoundHttpException branch is never hit; CarDetailDto::
-// fromArray([]) then fails on the missing 'id' key and surfaces as a 500.
-// This test documents the CURRENT behavior, not the desired 404.
-test('a CarVector 404 currently surfaces as a 500, not a 404', function () {
+test('it returns 404 when CarVector reports the car is not found', function () {
     Http::fake(['*' => Http::response([], 404)]);
 
-    $this->getJson('/api/cars/999')->assertStatus(500);
+    $this->getJson('/api/cars/999')
+        ->assertNotFound()
+        ->assertJsonPath('message', 'Car not found');
+});
+
+test('it returns 404 for a non-numeric id (route constraint)', function () {
+    $this->getJson('/api/cars/abc')->assertNotFound();
 });

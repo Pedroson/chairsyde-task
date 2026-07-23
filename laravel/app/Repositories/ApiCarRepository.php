@@ -26,10 +26,14 @@ class ApiCarRepository implements CarDataRepositoryInterface
 
     public function findById(CarDetailsRequestDto $dto): ?array
     {
-        return Http::baseUrl($this->baseUrl)
+        $response = Http::baseUrl($this->baseUrl)
             ->withToken($this->apiKey)
-            ->get(sprintf('/vehicles/%s', $dto->id))
-            ->collect()
-            ->toArray();
+            ->get(sprintf('/vehicles/%s', $dto->id));
+
+        if ($response->notFound()) {
+            return null;
+        }
+
+        return $response->collect()->toArray();
     }
 }
