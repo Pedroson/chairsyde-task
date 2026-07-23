@@ -3,6 +3,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\CarDataRepositoryInterface;
 use App\Repositories\ApiCarRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +14,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ApiCarRepository::class, function ($app) {
+        $this->app->bind(CarDataRepositoryInterface::class, function ($app) {
             // Toggle data sources using an .env variable
             if (config('services.user_data.source') === 'api') {
                 return new ApiCarRepository(
