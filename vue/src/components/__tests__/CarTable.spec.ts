@@ -17,7 +17,7 @@ describe('CarTable', () => {
 
   it('emits select with the car id when a row is clicked', async () => {
     const wrapper = mount(CarTable, { props: { cars } })
-    await wrapper.findAll('.car-row')[1].trigger('click')
+    await wrapper.findAll('.car-row')[1]!.trigger('click')
     expect(wrapper.emitted('select')![0]).toEqual([2])
   })
 

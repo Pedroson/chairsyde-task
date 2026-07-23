@@ -9,7 +9,7 @@ describe('CarSearchForm', () => {
     await wrapper.find('form').trigger('submit.prevent')
 
     expect(wrapper.emitted('search')).toBeTruthy()
-    expect(wrapper.emitted('search')![0][0]).toEqual({ make: 'Toyota' })
+    expect(wrapper.emitted('search')![0]![0]).toEqual({ make: 'Toyota' })
   })
 
   it('emits year as a number and model as a string when provided', async () => {
@@ -19,7 +19,7 @@ describe('CarSearchForm', () => {
     await wrapper.find('input[name="model"]').setValue('Focus')
     await wrapper.find('form').trigger('submit.prevent')
 
-    expect(wrapper.emitted('search')![0][0]).toEqual({
+    expect(wrapper.emitted('search')![0]![0]).toEqual({
       make: 'Ford',
       year: 2019,
       model: 'Focus',

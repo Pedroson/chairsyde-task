@@ -32,7 +32,7 @@ describe('cars api', () => {
 
     await searchCars({ make: 'Ford', limit: 20, offset: 20 })
 
-    const sentParams = get.mock.calls[0][1].params
+    const sentParams = get.mock.calls[0]![1].params
     expect(Object.keys(sentParams).sort()).toEqual(['limit', 'make', 'offset'])
     expect('year' in sentParams).toBe(false)
     expect('model' in sentParams).toBe(false)

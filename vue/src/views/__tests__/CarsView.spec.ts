@@ -53,7 +53,7 @@ describe('CarsView', () => {
     await wrapper.find('.next').trigger('click')
     await flushPromises()
 
-    expect(vi.mocked(searchCars).mock.calls[1][0]).toEqual({
+    expect(vi.mocked(searchCars).mock.calls[1]![0]).toEqual({
       make: 'Toyota',
       limit: 20,
       offset: 20,
