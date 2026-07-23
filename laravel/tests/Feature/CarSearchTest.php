@@ -45,6 +45,17 @@ test('it accepts a valid request that omits the optional year and model', functi
         ->assertOk();
 });
 
+// ApiCarRepository no longer calls ->throw(), so a non-2xx from CarVector is
+// not surfaced: the (empty) body is collected and the endpoint returns 200
+// with an empty list rather than erroring. Documents current behavior.
+test('a CarVector server error is not surfaced and returns an empty list', function () {
+    Http::fake(['*' => Http::response([], 500)]);
+
+    $this->getJson('/api/cars?make=Toyota&limit=10&offset=0')
+        ->assertOk()
+        ->assertExactJson([]);
+});
+
 test('it returns 422 when required fields are missing', function () {
     Http::fake(['*' => Http::response([])]);
 

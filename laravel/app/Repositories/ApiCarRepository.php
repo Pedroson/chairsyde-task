@@ -10,13 +10,10 @@ use Illuminate\Support\Facades\Http;
 
 class ApiCarRepository implements CarDataRepositoryInterface
 {
-
     public function __construct(
         private readonly string $baseUrl,
         private readonly string $apiKey,
-    )
-    {
-    }
+    ) {}
 
     public function getAll(CarSearchRequestDto $dto): Collection
     {
@@ -24,7 +21,6 @@ class ApiCarRepository implements CarDataRepositoryInterface
             ->withToken($this->apiKey)
             ->withQueryParameters($dto->toArray())
             ->get('/vehicles')
-            ->throw()
             ->collect();
     }
 
@@ -33,7 +29,6 @@ class ApiCarRepository implements CarDataRepositoryInterface
         return Http::baseUrl($this->baseUrl)
             ->withToken($this->apiKey)
             ->get(sprintf('/vehicles/%s', $dto->id))
-            ->throw()
             ->collect()
             ->toArray();
     }
