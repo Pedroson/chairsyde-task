@@ -38,7 +38,7 @@ describe('CarDetailModal', () => {
     const wrapper = mount(CarDetailModal, { props: { carId: 'asG52Fgs6gh' } })
     await flushPromises()
 
-    expect(getCar).toHaveBeenCalledWith(7)
+    expect(getCar).toHaveBeenCalledWith('asG52Fgs6gh')
     expect(wrapper.text()).toContain('Civic')
     expect(wrapper.text()).toContain('Sport')
     expect(wrapper.find('img').attributes('src')).toBe('http://example.com/civic.jpg')

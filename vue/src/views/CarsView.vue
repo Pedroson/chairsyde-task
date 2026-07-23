@@ -13,7 +13,7 @@ const loading = ref(false)
 const error = ref('')
 const fieldErrors = ref<Record<string, string[]>>({})
 const offset = ref(0)
-const selectedCarId = ref<number | null>(null)
+const selectedCarId = ref<string | null>(null)
 
 // Filters from the last submitted search (make required for pagination refetch).
 const filters = ref<{ make: string; year?: number; model?: string } | null>(null)

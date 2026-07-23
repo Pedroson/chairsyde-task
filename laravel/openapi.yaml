@@ -50,7 +50,7 @@ paths:
           required: true
           description: The car identifier.
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: The requested car.
@@ -106,7 +106,7 @@ components:
         - year
       properties:
         id:
-          type: integer
+          type: string
         make:
           type: string
         model:
@@ -131,7 +131,7 @@ components:
         - image_url
       properties:
         id:
-          type: integer
+          type: string
         make:
           type: string
         model:
@@ -140,20 +140,28 @@ components:
           type: integer
         trim:
           type: string
+          nullable: true
         horsepower:
           type: string
+          nullable: true
         cylinders:
           type: string
+          nullable: true
         displacement_l:
           type: string
+          nullable: true
         fuel_type:
           type: string
+          nullable: true
         transmission:
           type: string
+          nullable: true
         body_class:
           type: string
+          nullable: true
         image_url:
           type: string
+          nullable: true
     ValidationErrorBody:
       type: object
       additionalProperties: false

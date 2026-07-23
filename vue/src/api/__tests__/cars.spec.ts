@@ -49,12 +49,12 @@ describe('cars api', () => {
   })
 
   it('getCar requests /cars/:id and returns the detail', async () => {
-    const detail = { id: 7, make: 'Honda', model: 'Civic', year: 2021 }
+    const detail = { id: 'asG52Fgs6gh', make: 'Honda', model: 'Civic', year: 2021 }
     get.mockResolvedValue({ data: detail })
 
-    const result = await getCar(7)
+    const result = await getCar('asG52Fgs6gh')
 
-    expect(get).toHaveBeenCalledWith('/cars/7')
+    expect(get).toHaveBeenCalledWith('/cars/asG52Fgs6gh')
     expect(result).toEqual(detail)
   })
 })

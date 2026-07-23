@@ -4,7 +4,7 @@ use App\Dtos\CarDetailDto;
 
 test('fromArray maps all detail fields', function () {
     $data = [
-        'id' => 1,
+        'id' => 'asG52Fgs6gh',
         'make' => 'Toyota',
         'model' => 'Corolla',
         'year' => 2020,
@@ -20,7 +20,7 @@ test('fromArray maps all detail fields', function () {
 
     $dto = CarDetailDto::fromArray($data);
 
-    expect($dto->id)->toBe(1)
+    expect($dto->id)->toBe('asG52Fgs6gh')
         ->and($dto->make)->toBe('Toyota')
         ->and($dto->model)->toBe('Corolla')
         ->and($dto->year)->toBe(2020)

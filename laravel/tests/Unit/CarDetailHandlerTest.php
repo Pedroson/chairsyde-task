@@ -28,7 +28,7 @@ function fakeCarDetailRepository(?array $row): CarDataRepositoryInterface
 
 test('handle returns a CarDetailDto when the repository finds the car', function () {
     $row = [
-        'id' => 1,
+        'id' => 'asG52Fgs6gh',
         'make' => 'Toyota',
         'model' => 'Corolla',
         'year' => 2020,
@@ -43,14 +43,14 @@ test('handle returns a CarDetailDto when the repository finds the car', function
     ];
 
     $result = (new CarDetailHandler(fakeCarDetailRepository($row)))
-        ->handle(new CarDetailsRequestDto(id: 1));
+        ->handle(new CarDetailsRequestDto(id: 'asG52Fgs6gh'));
 
     expect($result)->toBeInstanceOf(CarDetailDto::class)
-        ->and($result->id)->toBe(1)
+        ->and($result->id)->toBe('asG52Fgs6gh')
         ->and($result->image_url)->toBe('https://example.com/car.png');
 });
 
 test('handle throws NotFoundHttpException when the repository returns null', function () {
     (new CarDetailHandler(fakeCarDetailRepository(null)))
-        ->handle(new CarDetailsRequestDto(id: 999));
+        ->handle(new CarDetailsRequestDto(id: 'asG52Fgs6gd'));
 })->throws(NotFoundHttpException::class, 'Car not found');

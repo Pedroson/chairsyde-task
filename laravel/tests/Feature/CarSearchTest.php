@@ -10,15 +10,17 @@ beforeEach(function () {
 test('it returns a list of cars from the CarVector API', function () {
     Http::fake([
         '*' => Http::response([
-            ['id' => 1, 'make' => 'Toyota', 'model' => 'Corolla', 'year' => 2020],
-            ['id' => 2, 'make' => 'Toyota', 'model' => 'Camry', 'year' => 2021],
+            'results' => [
+                ['id' => 'asG52Fgs6gh', 'make' => 'Toyota', 'model' => 'Corolla', 'year' => 2020],
+                ['id' => 'asG52Fgs6gd', 'make' => 'Toyota', 'model' => 'Camry', 'year' => 2021],
+            ],
         ]),
     ]);
 
     $this->getJson('/api/cars?make=Toyota&year=2020&model=Corolla&limit=10&offset=0')
         ->assertOk()
         ->assertJsonCount(2)
-        ->assertJsonPath('0.id', 1)
+        ->assertJsonPath('0.id', 'asG52Fgs6gh')
         ->assertJsonPath('0.make', 'Toyota')
         ->assertJsonPath('0.model', 'Corolla')
         ->assertJsonPath('0.year', 2020);

@@ -10,7 +10,7 @@ beforeEach(function () {
 test('it returns the car detail from the CarVector API', function () {
     Http::fake([
         '*' => Http::response([
-            'id' => 1,
+            'id' => 'asG52Fgs6gh',
             'make' => 'Toyota',
             'model' => 'Corolla',
             'year' => 2020,
@@ -25,9 +25,9 @@ test('it returns the car detail from the CarVector API', function () {
         ]),
     ]);
 
-    $this->getJson('/api/cars/1')
+    $this->getJson('/api/cars/asG52Fgs6gh')
         ->assertOk()
-        ->assertJsonPath('id', 1)
+        ->assertJsonPath('id', 'asG52Fgs6gh')
         ->assertJsonPath('make', 'Toyota')
         ->assertJsonPath('image_url', 'https://example.com/car.png');
 });
@@ -40,6 +40,6 @@ test('it returns 404 when CarVector reports the car is not found', function () {
         ->assertJsonPath('message', 'Car not found');
 });
 
-test('it returns 404 for a non-numeric id (route constraint)', function () {
-    $this->getJson('/api/cars/abc')->assertNotFound();
+test('it returns 404 for a non-alphanumeric id (route constraint)', function () {
+    $this->getJson('/api/cars/abc-123')->assertNotFound();
 });
