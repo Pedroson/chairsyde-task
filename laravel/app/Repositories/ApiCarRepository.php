@@ -6,6 +6,7 @@ use App\Contracts\CarDataRepositoryInterface;
 use App\Dtos\CarDetailsRequestDto;
 use App\Dtos\CarSearchRequestDto;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 
 class ApiCarRepository implements CarDataRepositoryInterface
 {
@@ -19,11 +20,21 @@ class ApiCarRepository implements CarDataRepositoryInterface
 
     public function getAll(CarSearchRequestDto $dto): Collection
     {
-        // TODO: Implement getAll() method.
+        return Http::baseUrl($this->baseUrl)
+            ->withToken($this->apiKey)
+            ->withQueryParameters($dto->toArray())
+            ->get('/vehicles')
+            ->throw()
+            ->collect();
     }
 
     public function findById(CarDetailsRequestDto $dto): ?array
     {
-        // TODO: Implement findById() method.
+        return Http::baseUrl($this->baseUrl)
+            ->withToken($this->apiKey)
+            ->get(sprintf('/vehicles/%s', $dto->id))
+            ->throw()
+            ->collect()
+            ->toArray();
     }
 }

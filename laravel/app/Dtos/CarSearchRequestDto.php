@@ -3,8 +3,9 @@
 namespace App\Dtos;
 
 use App\Contracts\DtoInterface;
+use Illuminate\Contracts\Support\Arrayable;
 
-readonly class CarSearchRequestDto implements DtoInterface
+readonly class CarSearchRequestDto implements DtoInterface, Arrayable
 {
     public function __construct(
         public int $year,
@@ -23,5 +24,16 @@ readonly class CarSearchRequestDto implements DtoInterface
             limit: $data['limit'],
             offset: $data['offset'],
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'year' => $this->year,
+            'make' => $this->make,
+            'model' => $this->model,
+            'limit' => $this->limit,
+            'offset' => $this->offset,
+        ];
     }
 }
