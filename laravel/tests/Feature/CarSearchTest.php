@@ -38,6 +38,13 @@ test('it forwards the query params and bearer token to CarVector', function () {
     });
 });
 
+test('it accepts a valid request that omits the optional year and model', function () {
+    Http::fake(['*' => Http::response([])]);
+
+    $this->getJson('/api/cars?make=Toyota&limit=10&offset=0')
+        ->assertOk();
+});
+
 test('it returns 422 when required fields are missing', function () {
     Http::fake(['*' => Http::response([])]);
 
