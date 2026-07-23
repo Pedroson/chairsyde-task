@@ -1,0 +1,195 @@
+openapi: 3.1.0
+info:
+  title: Cars API
+  description: >-
+    REST API exposing a car search (list) endpoint and a car detail endpoint.
+    The contract is derived from the application's form request validation
+    rules and DTO definitions.
+  version: 1.0.0
+servers:
+  - url: /api
+    description: API base path (routes are registered under the `/api` prefix)
+paths:
+  /cars:
+    get:
+      operationId: searchCars
+      summary: Search cars
+      description: >-
+        Returns a list of cars matching the supplied filters. Requests must not
+        contain any fields other than those defined below.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: >-
+            Search parameters. Serialized as individual query-string fields
+            (form style, exploded). No additional fields are permitted.
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/CarSearchRequest'
+      responses:
+        '200':
+          description: A list of matching cars.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarSummary'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /cars/{id}:
+    get:
+      operationId: getCar
+      summary: Get car detail
+      description: Returns the full detail for a single car by its identifier.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The car identifier.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The requested car.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  schemas:
+    CarSearchRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - make
+        - limit
+        - offset
+      properties:
+        year:
+          type: integer
+          minimum: 1900
+          maximum: 2023
+          nullable: true
+          description: Optional model year filter.
+        make:
+          type: string
+          maxLength: 255
+          description: Manufacturer to filter by.
+        model:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Optional model name filter.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          description: Maximum number of results to return.
+        offset:
+          type: integer
+          minimum: 0
+          description: Number of results to skip (for pagination).
+    CarSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - make
+        - model
+        - year
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+    CarDetail:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - make
+        - model
+        - year
+        - trim
+        - horsepower
+        - cylinders
+        - displacement
+        - fuel_type
+        - transmission
+        - body_class
+        - image_url
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        trim:
+          type: string
+        horsepower:
+          type: string
+        cylinders:
+          type: string
+        displacement:
+          type: string
+        fuel_type:
+          type: string
+        transmission:
+          type: string
+        body_class:
+          type: string
+        image_url:
+          type: string
+    ValidationErrorBody:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+        - errors
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Map of field name to its validation error messages.
+    ErrorBody:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        message:
+          type: string
+  responses:
+    NotFound:
+      description: The requested car was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorBody'
+          example:
+            message: Car not found
+    ValidationError:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorBody'

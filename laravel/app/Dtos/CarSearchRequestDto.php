@@ -10,8 +10,8 @@ readonly class CarSearchRequestDto implements DtoInterface
         public int $year,
         public string $make,
         public string $model,
-        public int $limit = 50,
-        public int $offset = 0
+        public int $limit,
+        public int $offset
     ) {}
 
     public static function fromArray(array $data): self
@@ -20,8 +20,8 @@ readonly class CarSearchRequestDto implements DtoInterface
             year: $data['year'],
             make: $data['make'],
             model: $data['model'],
-            limit: $data['limit'] ?? 50,
-            offset: $data['offset'] ?? 0,
+            limit: $data['limit'],
+            offset: $data['offset'],
         );
     }
 }
