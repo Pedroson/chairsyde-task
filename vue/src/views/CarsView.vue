@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { searchCars, type CarSummary, type CarSearchParams } from '@/api/cars'
 import CarSearchForm from '@/components/CarSearchForm.vue'
 import CarTable from '@/components/CarTable.vue'
@@ -17,6 +17,8 @@ const selectedCarId = ref<number | null>(null)
 
 // Filters from the last submitted search (make required for pagination refetch).
 const filters = ref<{ make: string; year?: number; model?: string } | null>(null)
+
+const hasFieldErrors = computed(() => Object.keys(fieldErrors.value).length > 0)
 
 async function runSearch() {
   if (!filters.value) return
@@ -73,17 +75,17 @@ function prev() {
     <p v-if="error" class="error">{{ error }}</p>
     <p v-if="loading" class="status">Loading…</p>
 
-    <template v-if="hasSearched && !loading">
+    <template v-if="hasSearched">
       <CarTable :cars="cars" @select="selectedCarId = $event" />
 
       <div class="pager">
-        <button class="prev" type="button" :disabled="offset === 0" @click="prev">
+        <button class="prev" type="button" :disabled="loading || offset === 0" @click="prev">
           Previous
         </button>
         <button
           class="next"
           type="button"
-          :disabled="cars.length < LIMIT"
+          :disabled="loading || cars.length < LIMIT"
           @click="next"
         >
           Next
@@ -91,7 +93,7 @@ function prev() {
       </div>
     </template>
 
-    <p v-else-if="!hasSearched && !loading" class="status">
+    <p v-else-if="!loading && !hasFieldErrors" class="status">
       Search for cars by make to get started.
     </p>
 

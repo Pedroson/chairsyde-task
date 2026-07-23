@@ -71,4 +71,35 @@ describe('CarsView', () => {
 
     expect(wrapper.text()).toContain('Required.')
   })
+
+  it('Previous is disabled on the first page and decrements offset by limit', async () => {
+    vi.mocked(searchCars).mockResolvedValue(
+      Array.from({ length: 20 }, (_, i) => ({ id: i + 1, make: 'Toyota', model: `M${i}`, year: 2020 })),
+    )
+    const wrapper = mount(CarsView)
+    await wrapper.find('input[name="make"]').setValue('Toyota')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    // first page: Previous disabled
+    expect(wrapper.find('.prev').attributes('disabled')).toBeDefined()
+
+    await wrapper.find('.next').trigger('click')   // offset -> 20
+    await flushPromises()
+    expect(wrapper.find('.prev').attributes('disabled')).toBeUndefined()
+
+    await wrapper.find('.prev').trigger('click')   // offset -> 0
+    await flushPromises()
+    expect(vi.mocked(searchCars).mock.calls[2]![0]).toEqual({ make: 'Toyota', limit: 20, offset: 0 })
+  })
+
+  it('shows a friendly message on a non-422 error', async () => {
+    vi.mocked(searchCars).mockRejectedValue({ response: { status: 500, data: { message: 'server error' } } })
+    const wrapper = mount(CarsView)
+    await wrapper.find('input[name="make"]').setValue('Toyota')
+    await wrapper.find('form').trigger('submit.prevent')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Something went wrong')
+  })
 })
