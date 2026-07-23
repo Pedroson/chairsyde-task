@@ -1,0 +1,8 @@
+{
+    "agents": [
+        "junie",
+        "claude_code"
+    ],
+    "cloud": false,
+    "guidelines": true
+}
