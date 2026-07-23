@@ -11,7 +11,7 @@ test('fromArray maps all detail fields', function () {
         'trim' => 'LE',
         'horsepower' => '169',
         'cylinders' => '4',
-        'displacement' => '2.0',
+        'displacement_l' => '2.0',
         'fuel_type' => 'Gasoline',
         'transmission' => 'Automatic',
         'body_class' => 'Sedan',
@@ -27,7 +27,7 @@ test('fromArray maps all detail fields', function () {
         ->and($dto->trim)->toBe('LE')
         ->and($dto->horsepower)->toBe('169')
         ->and($dto->cylinders)->toBe('4')
-        ->and($dto->displacement)->toBe('2.0')
+        ->and($dto->displacement_l)->toBe('2.0')
         ->and($dto->fuel_type)->toBe('Gasoline')
         ->and($dto->transmission)->toBe('Automatic')
         ->and($dto->body_class)->toBe('Sedan')

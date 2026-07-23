@@ -35,7 +35,7 @@ test('handle returns a CarDetailDto when the repository finds the car', function
         'trim' => 'LE',
         'horsepower' => '169',
         'cylinders' => '4',
-        'displacement' => '2.0',
+        'displacement_l' => '2.0',
         'fuel_type' => 'Gasoline',
         'transmission' => 'Automatic',
         'body_class' => 'Sedan',

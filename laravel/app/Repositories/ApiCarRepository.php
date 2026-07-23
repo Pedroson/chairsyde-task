@@ -17,11 +17,12 @@ class ApiCarRepository implements CarDataRepositoryInterface
 
     public function getAll(CarSearchRequestDto $dto): Collection
     {
-        return Http::baseUrl($this->baseUrl)
+        return collect(Http::baseUrl($this->baseUrl)
             ->withToken($this->apiKey)
             ->withQueryParameters($dto->toArray())
             ->get('/vehicles')
-            ->collect();
+            ->collect()
+            ->get('results', collect()));
     }
 
     public function findById(CarDetailsRequestDto $dto): ?array

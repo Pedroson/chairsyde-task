@@ -7,7 +7,7 @@ use App\Handlers\CarDetailHandler;
 
 class CarDetailController extends Controller
 {
-    public function __invoke(int $id, CarDetailHandler $handler)
+    public function __invoke(string $id, CarDetailHandler $handler)
     {
         $dto = CarDetailsRequestDto::fromArray(['id' => $id]);
 

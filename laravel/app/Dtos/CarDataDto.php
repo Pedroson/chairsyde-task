@@ -7,7 +7,7 @@ use App\Contracts\DtoInterface;
 readonly class CarDataDto implements DtoInterface
 {
     public function __construct(
-        public int $id,
+        public string $id,
         public string $make,
         public string $model,
         public int $year,

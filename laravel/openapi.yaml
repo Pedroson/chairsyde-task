@@ -124,7 +124,7 @@ components:
         - trim
         - horsepower
         - cylinders
-        - displacement
+        - displacement_l
         - fuel_type
         - transmission
         - body_class
@@ -144,7 +144,7 @@ components:
           type: string
         cylinders:
           type: string
-        displacement:
+        displacement_l:
           type: string
         fuel_type:
           type: string
