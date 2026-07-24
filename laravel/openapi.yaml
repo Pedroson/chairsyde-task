@@ -166,26 +166,38 @@ components:
       type: object
       additionalProperties: false
       required:
+        - statusCode
         - message
-        - errors
+        - error
       properties:
+        statusCode:
+          type: integer
+          example: 422
         message:
+          type: array
+          items:
+            type: string
+          description: List of validation failure messages.
+        error:
           type: string
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Map of field name to its validation error messages.
+          example: Unprocessable Entity
     ErrorBody:
       type: object
       additionalProperties: false
       required:
+        - statusCode
         - message
+        - error
       properties:
+        statusCode:
+          type: integer
+          example: 404
         message:
           type: string
+          example: Car not found
+        error:
+          type: string
+          example: Not Found
   responses:
     NotFound:
       description: The requested car was not found.
