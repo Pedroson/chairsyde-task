@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { ApiCarRepository } from './api-car.repository';
@@ -30,6 +30,13 @@ describe('ApiCarRepository.getAll', () => {
     expect(await repo.getAll({ make: 'Toyota', limit: 20, offset: 0 })).toEqual(
       [],
     );
+  });
+
+  it('returns an empty array when the upstream request fails', async () => {
+    const get = jest.fn().mockReturnValue(throwError(() => new Error('upstream down')));
+    const repo = makeRepo(get);
+
+    expect(await repo.getAll({ make: 'Toyota', limit: 20, offset: 0 })).toEqual([]);
   });
 
   it('sends the bearer token and query params to /vehicles', async () => {

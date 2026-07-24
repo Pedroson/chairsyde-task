@@ -80,8 +80,11 @@ describe('GET /api/cars (e2e)', () => {
     );
   });
 
-  it('returns 422 when required params are missing', async () => {
-    await request(app.getHttpServer()).get('/api/cars').expect(422);
+  it('returns 422 with a message array when required params are missing', async () => {
+    const res = await request(app.getHttpServer()).get('/api/cars').expect(422);
+
+    expect(res.body.statusCode).toBe(422);
+    expect(Array.isArray(res.body.message)).toBe(true);
   });
 
   it('returns 422 when an unknown param is supplied', async () => {
