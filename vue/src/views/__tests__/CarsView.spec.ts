@@ -60,16 +60,23 @@ describe('CarsView', () => {
     })
   })
 
-  it('surfaces 422 field errors from the search', async () => {
+  it('surfaces 422 validation messages from the search', async () => {
     vi.mocked(searchCars).mockRejectedValue({
-      response: { status: 422, data: { message: 'invalid', errors: { make: ['Required.'] } } },
+      response: {
+        status: 422,
+        data: {
+          statusCode: 422,
+          error: 'Unprocessable Entity',
+          message: ['make must be shorter than or equal to 255 characters'],
+        },
+      },
     })
     const wrapper = mount(CarsView)
     await wrapper.find('input[name="make"]').setValue('')
     await wrapper.find('form').trigger('submit.prevent')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Required.')
+    expect(wrapper.text()).toContain('make must be shorter than or equal to 255 characters')
   })
 
   it('Previous is disabled on the first page and decrements offset by limit', async () => {

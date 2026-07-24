@@ -11,20 +11,20 @@ const cars = ref<CarSummary[]>([])
 const hasSearched = ref(false)
 const loading = ref(false)
 const error = ref('')
-const fieldErrors = ref<Record<string, string[]>>({})
+const validationMessages = ref<string[]>([])
 const offset = ref(0)
 const selectedCarId = ref<string | null>(null)
 
 // Filters from the last submitted search (make required for pagination refetch).
 const filters = ref<{ make: string; year?: number; model?: string } | null>(null)
 
-const hasFieldErrors = computed(() => Object.keys(fieldErrors.value).length > 0)
+const hasValidationErrors = computed(() => validationMessages.value.length > 0)
 
 async function runSearch() {
   if (!filters.value) return
   loading.value = true
   error.value = ''
-  fieldErrors.value = {}
+  validationMessages.value = []
   const params: CarSearchParams = {
     make: filters.value.make,
     limit: LIMIT,
@@ -37,9 +37,10 @@ async function runSearch() {
     cars.value = await searchCars(params)
     hasSearched.value = true
   } catch (e: unknown) {
-    const err = e as { response?: { status?: number; data?: { errors?: Record<string, string[]> } } }
-    if (err.response?.status === 422 && err.response.data?.errors) {
-      fieldErrors.value = err.response.data.errors
+    const err = e as { response?: { status?: number; data?: { message?: string | string[] } } }
+    if (err.response?.status === 422 && err.response.data?.message) {
+      const message = err.response.data.message
+      validationMessages.value = Array.isArray(message) ? message : [message]
     } else {
       error.value = 'Something went wrong while searching. Please try again.'
     }
@@ -70,9 +71,12 @@ function prev() {
   <main class="cars-view">
     <h1>Cars</h1>
 
-    <CarSearchForm :errors="fieldErrors" :loading="loading" @search="onSearch" />
+    <CarSearchForm :loading="loading" @search="onSearch" />
 
     <p v-if="error" class="error">{{ error }}</p>
+    <ul v-if="hasValidationErrors" class="field-errors">
+      <li v-for="(message, i) in validationMessages" :key="i" class="error">{{ message }}</li>
+    </ul>
     <p v-if="loading" class="status">Loading…</p>
 
     <template v-if="hasSearched">
@@ -93,7 +97,7 @@ function prev() {
       </div>
     </template>
 
-    <p v-else-if="!loading && !hasFieldErrors" class="status">
+    <p v-else-if="!loading && !hasValidationErrors" class="status">
       Search for cars by make to get started.
     </p>
 
