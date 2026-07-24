@@ -33,10 +33,14 @@ describe('ApiCarRepository.getAll', () => {
   });
 
   it('returns an empty array when the upstream request fails', async () => {
-    const get = jest.fn().mockReturnValue(throwError(() => new Error('upstream down')));
+    const get = jest
+      .fn()
+      .mockReturnValue(throwError(() => new Error('upstream down')));
     const repo = makeRepo(get);
 
-    expect(await repo.getAll({ make: 'Toyota', limit: 20, offset: 0 })).toEqual([]);
+    expect(await repo.getAll({ make: 'Toyota', limit: 20, offset: 0 })).toEqual(
+      [],
+    );
   });
 
   it('sends the bearer token and query params to /vehicles', async () => {
@@ -69,7 +73,12 @@ describe('ApiCarRepository.getAll', () => {
 
 describe('ApiCarRepository.findById', () => {
   it('returns the upstream vehicle body', async () => {
-    const car = { id: 'asG52Fgs6gh', make: 'Toyota', model: 'Corolla', year: 2020 };
+    const car = {
+      id: 'asG52Fgs6gh',
+      make: 'Toyota',
+      model: 'Corolla',
+      year: 2020,
+    };
     const get = jest.fn().mockReturnValue(of({ data: car }));
     const repo = makeRepo(get);
 
