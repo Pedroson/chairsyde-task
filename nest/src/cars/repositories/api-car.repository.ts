@@ -39,7 +39,19 @@ export class ApiCarRepository implements CarDataRepository {
     return Array.isArray(results) ? (results as Record<string, unknown>[]) : [];
   }
 
-  findById(_id: string): Promise<Record<string, unknown> | null> {
-    throw new Error('Not implemented');
+  async findById(id: string): Promise<Record<string, unknown> | null> {
+    const response = await firstValueFrom(
+      this.http.get(`/vehicles/${id}`, {
+        baseURL: this.baseUrl,
+        headers: { Authorization: `Bearer ${this.apiKey}` },
+      }),
+    ).catch((error: { response?: { status?: number } }) => {
+      if (error?.response?.status === 404) {
+        return null;
+      }
+      throw error;
+    });
+
+    return response ? (response.data as Record<string, unknown>) : null;
   }
 }

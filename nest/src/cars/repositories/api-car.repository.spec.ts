@@ -66,3 +66,30 @@ describe('ApiCarRepository.getAll', () => {
     );
   });
 });
+
+describe('ApiCarRepository.findById', () => {
+  it('returns the upstream vehicle body', async () => {
+    const car = { id: 'asG52Fgs6gh', make: 'Toyota', model: 'Corolla', year: 2020 };
+    const get = jest.fn().mockReturnValue(of({ data: car }));
+    const repo = makeRepo(get);
+
+    const result = await repo.findById('asG52Fgs6gh');
+
+    expect(result).toEqual(car);
+    expect(get).toHaveBeenCalledWith(
+      '/vehicles/asG52Fgs6gh',
+      expect.objectContaining({
+        headers: { Authorization: 'Bearer test-key' },
+      }),
+    );
+  });
+
+  it('returns null when CarVector responds 404', async () => {
+    const get = jest
+      .fn()
+      .mockReturnValue(throwError(() => ({ response: { status: 404 } })));
+    const repo = makeRepo(get);
+
+    expect(await repo.findById('missing')).toBeNull();
+  });
+});

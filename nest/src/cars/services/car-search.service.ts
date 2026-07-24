@@ -1,8 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  CAR_DATA_REPOSITORY,
-  CarDataRepository,
-} from '../interfaces/car-data.repository';
+import { CAR_DATA_REPOSITORY } from '../interfaces/car-data.repository';
+import type { CarDataRepository } from '../interfaces/car-data.repository';
 import { CarSearchRequestDto } from '../dto/car-search-request.dto';
 import { CarSummaryDto } from '../dto/car-summary.dto';
 
